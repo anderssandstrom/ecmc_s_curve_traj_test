@@ -55,13 +55,15 @@ def main():
       oldVelo=0
       oldAcc=0
       firstLine=0
-    
+
+
+    # Calc velo and acc from position data
     pos=float(splittedLine[0])
-    posArray=np.append(posArray,pos)        
-    velo=(pos-oldPos)/timeStep    
+    posArray=np.append(posArray,pos)  
+    velo=(pos-oldPos)/timeStep
     veloArray=np.append(veloArray,velo)
 
-    acc=(velo-oldVelo)/timeStep    
+    acc=(velo-oldVelo)/timeStep
     accArray=np.append(accArray,acc)
     currTime = currTime + timeStep
     time=np.append(time,currTime)

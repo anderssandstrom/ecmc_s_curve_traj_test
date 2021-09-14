@@ -38,10 +38,8 @@ def CalcPreps():
   print("Executing preps at configuration time")
 
 
-def getNextPosition():
-  global stateCurr
-  global posCurr, veloCurr, accCurr, posCurr, accMax, decMax, jerk, veloMax
-
+def getNextPosition():  
+  global stateCurr,posCurr, veloCurr, accCurr, posCurr, accMax, decMax, jerk, veloMax
 
   if(stateCurr == sCurveState.STANDSTILL):
     print("STANDSTILL")
@@ -54,12 +52,20 @@ def getNextPosition():
       accCurr = accCurr + accStep
       if accCurr > accMax:
         accCurr = accMax
-    veloCurr = veloCurr + accCurr*timeStep    
-    posCurr = posCurr + veloCurr*timeStep
-    return posCurr, veloCurr, accCurr
+    veloCurr = veloCurr + accCurr * timeStep
+    if veloCurr>=veloMax:      
+      #veloCurr=veloMax // Cannot change veloCurr since that would affect accelartion also
+      stateCurr = sCurveState.ACC_STEADY
+    else:
+      posCurr = posCurr + veloCurr *timeStep
+      return posCurr, veloCurr, accCurr
 
   if(stateCurr == sCurveState.ACC_STEADY):
     print("ACC_STEADY")
+    posCurr = posCurr + veloCurr * timeStep
+    veloCurr = veloCurr + accCurr * timeStep
+    accCurr = accMax
+    return posCurr, veloCurr, accCurr
 
   if(stateCurr == sCurveState.ACC_2):
     print("ACC_2")
