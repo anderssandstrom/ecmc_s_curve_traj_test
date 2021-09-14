@@ -6,18 +6,21 @@ import matplotlib.pyplot as plt
  
 def printOutHelp():
   print ("python plotData.py [<filename>]")
+  print ("This function only uses position (calcs velo and acc from position)")
   print ("example: python plotdata.py xx.txt")
   print ("example: cat xx.txt | python plotdata.py")
   print ("expected format of file:")
   print ("<pos>,<velo>,<acc>")
+  
 
-def main():
-  pos = np.array([])
-  velo = np.array([]) 
-  acc = np.array([]) 
+def main():  
+  posArray = np.array([])
+  veloArray = np.array([]) 
+  accArray = np.array([]) 
   time = np.array([])
   currTime = 0
   timeStep=0.001
+  firstLine=1
 
   # Check args
   if len(sys.argv)>1:
@@ -37,7 +40,7 @@ def main():
 
   if len(sys.argv)==1:
     fname=""
-    dataFile=sys.stdin;
+    dataFile=sys.stdin
 
   for line in dataFile:
     print(line)
@@ -47,25 +50,37 @@ def main():
 
     splittedLine=line.split(',')
     print(splittedLine)
+    if firstLine:
+      oldPos=float(splittedLine[0])
+      oldVelo=0
+      oldAcc=0
+      firstLine=0
+    
+    pos=float(splittedLine[0])
+    posArray=np.append(posArray,pos)        
+    velo=(pos-oldPos)/timeStep    
+    veloArray=np.append(veloArray,velo)
 
-    pos=np.append(pos,float(splittedLine[0]))
-    velo=np.append(velo,float(splittedLine[1]))
-    acc=np.append(acc,float(splittedLine[2]))
+    acc=(velo-oldVelo)/timeStep    
+    accArray=np.append(accArray,acc)
     currTime = currTime + timeStep
     time=np.append(time,currTime)
-    
+
+    oldVelo=velo
+    oldPos=pos 
+
   plt.subplot(3,1,1) 
-  plt.plot(time,pos,'b')  
+  plt.plot(time,posArray,'b')  
   plt.grid()
   plt.legend('Pos')
   plt.xlabel("time")
   plt.subplot(3,1,2) 
-  plt.plot(time,velo,'r')
+  plt.plot(time,veloArray,'r')
   plt.grid()
   plt.legend('Velo')
   plt.xlabel("time")
   plt.subplot(3,1,3) 
-  plt.plot(time,acc,'g')
+  plt.plot(time,accArray,'g')
   plt.grid()
   plt.legend('Acc')
   plt.xlabel("time")

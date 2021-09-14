@@ -49,11 +49,12 @@ def getNextPosition():
   
   if(stateCurr == sCurveState.ACC_1):
     print("ACC_1")
+
     if accCurr < accMax:
       accCurr = accCurr + accStep
       if accCurr > accMax:
         accCurr = accMax
-    veloCurr = veloCurr + accCurr*timeStep
+    veloCurr = veloCurr + accCurr*timeStep    
     posCurr = posCurr + veloCurr*timeStep
     return posCurr, veloCurr, accCurr
 
@@ -78,5 +79,6 @@ def getNextPosition():
 if __name__ == "__main__":
 
   for x in range(4000):
+    CalcPreps()
     [pos, velo, acc] = getNextPosition()
     print( str(pos) + "," + str(velo) + "," + str(acc) )
