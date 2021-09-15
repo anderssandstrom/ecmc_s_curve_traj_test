@@ -1,21 +1,16 @@
 # ecmc_s_curve_traj_test
 
 ```
-
 python s_traj.py  | python plotDataPosDiff.py &
 
 ```
 
+basic motion equations tests:
+```
+x=x0+v0*t+0.5*a*t*t+1/6*j*t*t*t
+python distVelAccJerk.py  | python plotDataPosDiff.py &
 
-
-
-
-
-
-
-
-
-
+```
 
 # Some notes..
 
